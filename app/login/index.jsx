@@ -14,11 +14,11 @@ export default function LoginScreen() {
                     style={styles.image}
                 />
             </View>
-            <View style={{ padding: 20, backgroundColor: Colors.PRIMARY, height: '100%' }}>
-                <Text style={{fontSize:30, fontWeight:'bold',color:'white', textAlign:'center'}}> Stay on Track, Stay Healthy!</Text>
-                <Text style={{color:'white', textAlign:'center',fontSize:17,marginTop:20}}>Track your meds, Take control of your health. Stay consistent, Stay confident</Text>
+            <View style={{ padding: 20, backgroundColor: Colors.PRIMARY, height: '100%', borderRadius: 25 }}>
+                <Text style={{ fontSize: 30, fontWeight: 'bold', color: 'white', textAlign: 'center' }}> Stay on Track, Stay Healthy!</Text>
+                <Text style={{ color: 'white', textAlign: 'center', fontSize: 17, marginTop: 20 }}>Track your meds, Take control of your health. Stay consistent, Stay confident</Text>
                 <TouchableOpacity style={styles.button} onPress={() => router.push('login/signin')}>
-                    <Text style={{textAlign:'center',fontSize:16,color:Colors.PRIMARY}}>Continue</Text>
+                    <Text style={{ textAlign: 'center', fontSize: 16, color: Colors.PRIMARY }}>Continue</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -28,7 +28,7 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
     image: { width: 400, height: 400, borderRadius: 20 },
     button: {
-        backgroundColor:'white',
+        backgroundColor: 'white',
         padding: 10,
         borderRadius: 99,
         marginTop: 20,
