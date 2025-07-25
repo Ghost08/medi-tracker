@@ -18,7 +18,7 @@ export default function LoginScreen() {
                 <Text style={{ fontSize: 30, fontWeight: 'bold', color: 'white', textAlign: 'center' }}> Stay on Track, Stay Healthy!</Text>
                 <Text style={{ color: 'white', textAlign: 'center', fontSize: 17, marginTop: 20 }}>Track your meds, Take control of your health. Stay consistent, Stay confident</Text>
                 <TouchableOpacity style={styles.button} onPress={() => router.push('login/signin')}>
-                    <Text style={{ textAlign: 'center', fontSize: 16, color: Colors.PRIMARY }}>Continue</Text>
+                    <Text style={{ textAlign: 'center', fontSize: 17, color: Colors.PRIMARY }}>Continue</Text>
                 </TouchableOpacity>
             </View>
         </View>
