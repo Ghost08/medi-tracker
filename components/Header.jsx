@@ -15,7 +15,6 @@ export default function Header() {
     const getUser = async () => {
         const user = await getLocalStorage('user');
         setUser(user);
-
     }
 
     return (

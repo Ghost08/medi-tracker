@@ -1,7 +1,20 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import Colors from '../constant/Colors';
-export default function MedicationCard({ medication }) {
+export default function MedicationCard({ medication, selectedDate = '' }) {
+
+    const [status, setStatus] = useState();
+
+    useEffect(() => {
+        checkStatus();
+    }, [medication])
+
+    const checkStatus = () => {
+        const data = medication?.action?.find((item) => item.date === selectedDate);
+        setStatus(data);
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.subContainer}>
@@ -13,13 +26,24 @@ export default function MedicationCard({ medication }) {
                 <View >
                     <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{medication?.name}</Text>
                     <Text style={{ fontSize: 11, fontWeight: 'bold' }}>{medication?.when}</Text>
-                    <Text style={{  fontSize: 10,fontWeight: 'bold', color: 'black' }}>{medication?.dose} {medication?.type?.name}</Text>
+                    <Text style={{ fontSize: 10, fontWeight: 'bold', color: 'black' }}>{medication?.dose} {medication?.type?.name}</Text>
                 </View>
             </View >
             <View style={styles.reminderContainer}>
                 <Ionicons name="timer-outline" size={24} color="black" />
                 <Text style={{ fontSize: 15, fontWeight: 'bold' }}>{medication?.reminder}</Text>
             </View>
+
+            {
+                status?.date &&
+                <View style={styles.statusContainer}>
+                    {
+                        status?.status == 'Taken' ? <Ionicons name="checkmark-circle" size={24} color={Colors.GREEN} /> :
+                            status?.status == 'Missed' && <Ionicons name="close-circle" size={24} color={'red'} />
+                    }
+
+                </View>
+            }
         </View>
     )
 }
@@ -55,5 +79,10 @@ const styles = StyleSheet.create({
         width: 120,
         borderWidth: 1,
         borderColor: Colors.LIGHT_GRAY_BORDER,
+    },
+    statusContainer: {
+        position: 'absolute',
+        top: 5,
+        padding: 7
     }
 })

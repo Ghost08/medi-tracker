@@ -1,3 +1,4 @@
+import { useRouter } from "expo-router";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import moment from 'moment';
 import { useEffect, useState } from 'react';
@@ -10,6 +11,7 @@ import EmptyState from "./EmptyState";
 import MedicationCard from "./MedicationCard";
 export default function MedicationList() {
 
+    const router = useRouter();
     const [medlist, setMedlist] = useState([]);
     const [dateRange, setDateRange] = useState([]);
     const [selectedDate, setSelectedDate] = useState(moment().format('DD/MM/YYYY'));
@@ -18,7 +20,6 @@ export default function MedicationList() {
     const getDateRange = () => {
         const range = getDisplayDateRange(7);
         setDateRange(range);
-        console.log(range);
     }
 
     const getMedications = async (selectedDate) => {
@@ -36,7 +37,6 @@ export default function MedicationList() {
                 setMedlist(prev => [...prev, { ...doc.data(), id: doc.id }]);
             });
             setLoading(false);
-            console.log('Medications fetched:', medlist);
 
         } catch (error) {
             setLoading(false);
@@ -80,7 +80,15 @@ export default function MedicationList() {
                         onRefresh={() => getMedications(selectedDate)}
                         refreshing={loading}
                         renderItem={({ item, index }) => (
-                            <MedicationCard medication={item}></MedicationCard>
+                            <TouchableOpacity onPress={()=> router.push({
+                                pathname:'/action-modal',
+                                params:{
+                                    ...item,
+                                    selectedDate:selectedDate
+                                }
+                            })}>
+                                <MedicationCard medication={item} selectedDate={selectedDate}></MedicationCard>
+                            </TouchableOpacity>
                         )}
                     />
             }

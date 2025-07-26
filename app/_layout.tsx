@@ -7,6 +7,9 @@ export default function RootLayout() {
         name="(tabs)"
       />
       <Stack.Screen name="login" />
+      <Stack.Screen name="action-modal" options={{
+        presentation: "modal"
+      }} />
     </Stack>
   );
 }
