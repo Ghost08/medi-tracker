@@ -38,9 +38,28 @@ export const getDisplayDateRange = (days) => {
 
     for (let i = 0; i < days; i++) {
         dateRange.push({
-            date:moment().add(i, 'days').format('DD'),
+            date: moment().add(i, 'days').format('DD'),
             day: moment().add(i, 'days').format('dd'),
             formattedDate: moment().add(i, 'days').format('DD/MM/YYYY')
+        });
+    }
+
+    return dateRange;
+
+}
+
+export const getDisplayPrevDateRange = (days) => {
+
+    const dateRange = [];
+
+    for (let i = 0; i < days; i++) {
+
+        const date = moment().subtract(i, 'days');
+
+        dateRange.push({
+            date: date.format('DD'),
+            day: date.format('dd'),
+            formattedDate: date.format('DD/MM/YYYY')
         });
     }
 
