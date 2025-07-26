@@ -1,29 +1,21 @@
-import { StyleSheet, View } from 'react-native'
-import EmptyState from '../../components/EmptyState'
+import { FlatList, View } from 'react-native'
 import Header from '../../components/Header'
-import Colors from '../../constant/Colors'
+import MedicationList from '../../components/MedicationList'
 
 export default function index() {
 
   return (
-    <View style={{ padding: 25, backgroundColor: 'white', height: '100%', width: '100%' }}>
-      <Header></Header>
-      <EmptyState></EmptyState>
-    </View>
+    <FlatList
+      style={{ height: '100%', backgroundColor: 'white' }}
+      data={[]}
+      ListHeaderComponent={
+        <View style={{ padding: 25, backgroundColor: 'white', height: '100%', width: '100%' }}>
+          <Header></Header>
+          <MedicationList></MedicationList>
+        </View>
+      }
+    />
+
   )
 }
 
-const styles = StyleSheet.create({
-  textHeader: {
-    fontSize: 30,
-    fontWight: 'bold',
-    marginTop: 15,
-  },
-  button: {
-    padding: 15,
-    backgroundColor: Colors.PRIMARY,
-    borderRadius: 10,
-    marginTop: 35,
-
-  }
-})

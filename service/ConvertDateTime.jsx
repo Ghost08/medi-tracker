@@ -25,9 +25,25 @@ export const getDateRange = (startDate, endDate) => {
     let currentDate = start.clone();
 
     while (currentDate.isSameOrBefore(end)) {
-        dateRange.push(currentDate.format('L'));
+        dateRange.push(currentDate.format('DD/MM/YYYY'));
         currentDate.add(1, 'days');
     }
 
     return dateRange;
+}
+
+export const getDisplayDateRange = (days) => {
+
+    const dateRange = [];
+
+    for (let i = 0; i < days; i++) {
+        dateRange.push({
+            date:moment().add(i, 'days').format('DD'),
+            day: moment().add(i, 'days').format('dd'),
+            formattedDate: moment().add(i, 'days').format('DD/MM/YYYY')
+        });
+    }
+
+    return dateRange;
+
 }

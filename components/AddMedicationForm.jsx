@@ -31,14 +31,14 @@ export default function AddMedicationForm() {
 
         const docId = Date.now().toString();
         const user = await getLocalStorage('user');
-        console.log(formData);
+       
         if (!(formData?.name || formData?.type || formData?.dose || formData?.when || formData?.startDate || formData?.endDate || formData?.reminder)) {
             Alert.alert('Please fill all the fields');
             return;
         }
 
         const dates = formData?.startDate && formData?.endDate ? getDateRange(formData?.startDate, formData?.endDate) : [];
-        console.log('Dates:', dates);
+        
         setLoading(true);
         try {
 
@@ -54,6 +54,7 @@ export default function AddMedicationForm() {
                 {
                     text: 'OK',
                     onPress: () => {
+                        setFormData({});
                         router.push('(tabs)');
                     }
                 }
