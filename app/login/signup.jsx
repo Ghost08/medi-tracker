@@ -14,10 +14,14 @@ export default function SignUp() {
     const [userName, setUserName] = useState('');
 
     const OnCreateAccount = () => {
+        const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         if (!email || !password || !userName) {
             Alert.alert('Error', 'Please fill in all fields.');
-
-        } else {
+        }
+        else if (!regex.test(email)) {
+            Alert.alert('Error', 'Please provide valid email');
+        }
+        else {
             createUserWithEmailAndPassword(auth, email, password)
                 .then(async (userCredential) => {
                     // Signed up 
@@ -38,6 +42,8 @@ export default function SignUp() {
 
                     if (errorCode === 'auth/email-already-in-use') {
                         Alert.alert('Error', 'Email already in use. Please use a different email.');
+                    }else if(errorCode==='auth/weak-password'){
+                        Alert.alert('Error', 'Password should be at least 6 characters');
                     }
                 });
         }

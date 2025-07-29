@@ -1,20 +1,23 @@
 import moment from "moment";
 
 export const formatDate = (timestamp) => {
-    return new Date(timestamp);
+    return timestamp ? new Date(timestamp) : null;
 }
 
 export const ConvertDateTimeToString = (date) => {
-    return moment(date).format('L');
+    return date ? moment(date).format('L') : null;
 }
 
 export const formatTime = (timestamp) => {
-    const date = new Date(timestamp);
-    const timeString = date.toLocaleTimeString([], {
-        hour: '2-digit',
-        minute: '2-digit'
-    });
-    return timeString;
+    if (!Number.isNaN(timestamp)) {
+        const date = new Date(timestamp);
+        const timeString = date.toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+        return timeString;
+    }
+
 }
 
 export const getDateRange = (startDate, endDate) => {

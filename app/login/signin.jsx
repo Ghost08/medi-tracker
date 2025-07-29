@@ -13,15 +13,19 @@ export default function SignIn() {
   const [password, setPassword] = useState('');
 
   const OnSignInClick = () => {
+    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
     if (!email || !password) {
       Alert.alert('Error', 'Please provide email and password.');
+    } else if (!regex.test(email)) {
+      Alert.alert('Error', 'Please provide valid email');
     } else {
       // Logic for signing in the user goes here
       signInWithEmailAndPassword(auth, email, password)
         .then(async (userCredential) => {
           // Signed in 
           const user = userCredential.user;
-          await setLocalStorage('user', user); 
+          await setLocalStorage('user', user);
           router.push('/(tabs)');
         })
         .catch((error) => {
