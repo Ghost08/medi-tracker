@@ -16,6 +16,7 @@ export default function MedicationActionModal() {
 
       const docRef = doc(db, 'medications', medication?.id)
 
+      // this logic always adds new entry in action
       await updateDoc(docRef, {
         action: arrayUnion({
           status: status,

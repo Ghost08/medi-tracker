@@ -3,7 +3,7 @@ import RNDateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
 import { useRouter } from 'expo-router';
 import { doc, setDoc } from 'firebase/firestore';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { db } from '../config/FirebaseConfig';
 import Colors from '../constant/Colors';
@@ -11,14 +11,23 @@ import { TypeList, WhenToTake } from '../constant/Options';
 import { ConvertDateTimeToString, formatDate, formatTime, getDateRange } from '../service/ConvertDateTime';
 import { getLocalStorage } from '../service/Storage';
 
-export default function AddMedicationForm() {
+
+export default function AddMedicationForm({ isRefeshScreen = false }) {
 
     const router = useRouter();
-    const [formData, setFormData] = useState();
+    
+    const [formData, setFormData] = useState({});
     const [showStartDate, setShowStartDate] = useState(false);
     const [showEndDate, setShowEndDate] = useState(false);
     const [showReminderTime, setShowReminderTime] = useState(false);
     const [loading, setLoading] = useState(false);
+
+    // reset form values on screen pull to refresh
+    useEffect(() => {
+        if (isRefeshScreen) {
+            setFormData({});
+        }
+    }, [isRefeshScreen == true])
 
     const onHandleInputChage = (field, value) => {
         setFormData(prev => ({
@@ -27,18 +36,23 @@ export default function AddMedicationForm() {
         }));
     }
 
+
+
     const saveMedication = async () => {
 
         const docId = Date.now().toString();
         const user = await getLocalStorage('user');
-       
-        if (!(formData?.name || formData?.type || formData?.dose || formData?.when || formData?.startDate || formData?.endDate || formData?.reminder)) {
-            Alert.alert('Please fill all the fields');
+
+        if ((!formData?.name || !formData?.type || !formData?.dose || !formData?.when || !formData?.startDate || !formData?.endDate || !formData?.reminder)) {
+            Alert.alert('Warning', 'Please fill all the fields');
+            return;
+        } else if (formData?.when === 'When To Take') {
+            Alert.alert('Warning', 'Please select when to take option');
             return;
         }
 
         const dates = formData?.startDate && formData?.endDate ? getDateRange(formData?.startDate, formData?.endDate) : [];
-        
+
         setLoading(true);
         try {
 
@@ -74,7 +88,7 @@ export default function AddMedicationForm() {
             <Text style={styles.header}>Add New Medication</Text>
             <View style={styles.inputGroup}>
                 <Ionicons style={styles.icon} name="medkit-outline" size={24} color="black" />
-                <TextInput style={styles.textInput} placeholder='Medicine Name' onChangeText={(value) => onHandleInputChage('name', value)}></TextInput>
+                <TextInput style={styles.textInput} maxLength={20} placeholder='Medicine Name' value={formData?.name}  onChangeText={(value) => onHandleInputChage('name', value)}></TextInput>
             </View>
             <FlatList data={TypeList} horizontal={true} style={{ marginTop: 10 }}
                 showsHorizontalScrollIndicator={false}
@@ -93,7 +107,7 @@ export default function AddMedicationForm() {
 
             <View style={styles.inputGroup}>
                 <Ionicons style={styles.icon} name="eyedrop-outline" size={24} color="black" />
-                <TextInput style={styles.textInput} placeholder='Dose ex. 2 , 5ml' onChangeText={(value) => onHandleInputChage('dose', value)}></TextInput>
+                <TextInput style={styles.textInput} placeholder='Dose ex. 2 , 5ml' maxLength={10} value={formData?.dose} onChangeText={(value) => onHandleInputChage('dose', value)}></TextInput>
             </View>
 
             <View style={styles.inputGroup}>
@@ -201,7 +215,7 @@ const styles = StyleSheet.create({
     },
     text: {
         padding: 10,
-        fontSize: 16,
+        fontSize: 14,
         flex: 1,
     },
     dateInputGroup: {

@@ -11,8 +11,12 @@ export default function MedicationCard({ medication, selectedDate = '' }) {
     }, [medication])
 
     const checkStatus = () => {
-        const data = medication?.action?.find((item) => item.date === selectedDate);
-        setStatus(data);
+
+        const data = medication?.action?.filter((item) => item.date === selectedDate);
+        if (data) {
+            // show last entry of selected date for given medicine
+            setStatus(data[data.length - 1]);
+        }
     }
 
     return (
@@ -30,8 +34,8 @@ export default function MedicationCard({ medication, selectedDate = '' }) {
                 </View>
             </View >
             <View style={styles.reminderContainer}>
-                <Ionicons name="timer-outline" size={24} color="black" />
-                <Text style={{ fontSize: 15, fontWeight: 'bold' }}>{medication?.reminder}</Text>
+                <Ionicons name="timer-outline" size={24} color={Colors.PRIMARY} />
+                <Text style={{ fontSize: 12, fontWeight: 'bold' }}>{medication?.reminder}</Text>
             </View>
 
             {
@@ -71,12 +75,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     reminderContainer: {
-        padding: 10,
+        position:'absolute',
+        bottom:5,
+        right:5,
+        padding: 5,
         borderRadius: 15,
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'row',
-        width: 120,
+        width: 100,
         borderWidth: 1,
         borderColor: Colors.LIGHT_GRAY_BORDER,
     },
